@@ -1,0 +1,145 @@
+@font-face {
+    font-family: anodetonoone;
+    src        : url(../fontes/ANODETONOONE.TTF);
+}
+
+body,
+html {
+    height: 100%;
+}
+
+body {
+    overflow-y      : hidden;
+    background-image: url(../imagens/fundo.jpg);
+    display         : flex;
+    justify-content : center;
+    align-items     : center;
+}
+
+h1 {
+    font-family: anodetonoone;
+    font-size  : 40px;
+    color      : #603a03
+}
+
+.container {
+    width   : 950px;
+    margin  : 0 auto;
+    position: relative;
+}
+
+.fundo-jogo {
+    height          : 630px;
+    background-image: url(../imagens/fundo_game.jpg);
+    border          : solid #fff;
+    display         : flex;
+    justify-content : center;
+    align-items     : center;
+}
+
+.inicio {
+    width     : 350px;
+    height    : 245px;
+    background: #fff;
+    text-align: center;
+    padding   : 10px;
+
+}
+
+.jogador {
+    width           : 256px;
+    height          : 66px;
+    position        : absolute;
+    left            : 8px;
+    top             : 179px;
+    background-image: url(../imagens/apache.png);
+}
+
+.amigo {
+    width           : 44px;
+    height          : 51px;
+    position        : absolute;
+    left            : 10px;
+    top             : 464px;
+    background-image: url(../imagens/amigo.png);
+}
+
+.inimigo1 {
+    width           : 256px;
+    height          : 66px;
+    position        : absolute;
+    left            : 689px;
+    top             : 253px;
+    background-image: url(../imagens/inimigo1.png);
+}
+
+.inimigo2 {
+    width           : 165px;
+    height          : 70px;
+    position        : absolute;
+    left            : 775px;
+    top             : 447px;
+    background-image: url(../imagens/inimigo2.png);
+}
+
+.projetil {
+    width           : 50px;
+    height          : 8px;
+    position        : absolute;
+    background-image: url(../imagens/projetil.png);
+}
+
+.explosao-jogador-inimigo1 {
+    background-image: url(../imagens/explosao.png);
+    width           : 15px;
+    height          : 87px;
+    position        : absolute;
+
+}
+
+
+/* animações */
+.animacao-jogador {
+    background-image: url(../imagens/apache.png);
+    animation       : animacao-jogador .5s steps(2) infinite;
+}
+
+@keyframes animacao-jogador {
+    from {
+        background-position: 0px;
+    }
+
+    to {
+        background-position: -512px;
+    }
+}
+
+.animacao-inimigo1 {
+    background-image: url(../imagens/inimigo1.png);
+    animation       : animacao-inimigo1 .5s steps(2) infinite;
+}
+
+@keyframes animacao-inimigo1 {
+    from {
+        background-position: 0px;
+    }
+
+    to {
+        background-position: -512px;
+    }
+}
+
+.animacao-amigo {
+    background-image: url(../imagens/amigo.png);
+    animation       : animacao-amigo 1s steps(12) infinite;
+}
+
+@keyframes animacao-amigo {
+    from {
+        background-position: 0px;
+    }
+
+    to {
+        background-position: -528px;
+    }
+}
