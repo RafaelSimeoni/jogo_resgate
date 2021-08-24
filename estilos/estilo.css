@@ -55,31 +55,31 @@ h1 {
     background-image: url(../imagens/apache.png);
 }
 
-.amigo {
+.aliado {
     width           : 44px;
     height          : 51px;
     position        : absolute;
     left            : 10px;
     top             : 464px;
-    background-image: url(../imagens/amigo.png);
+    background-image: url(../imagens/aliado.png);
 }
 
-.inimigo1 {
+.helicoptero-inimigo {
     width           : 256px;
     height          : 66px;
     position        : absolute;
     left            : 689px;
     top             : 253px;
-    background-image: url(../imagens/inimigo1.png);
+    background-image: url(../imagens/helicoptero-inimigo.png);
 }
 
-.inimigo2 {
+.caminhao {
     width           : 165px;
     height          : 70px;
     position        : absolute;
     left            : 775px;
     top             : 447px;
-    background-image: url(../imagens/inimigo2.png);
+    background-image: url(../imagens/caminhao.png);
 }
 
 .projetil {
@@ -89,14 +89,13 @@ h1 {
     background-image: url(../imagens/projetil.png);
 }
 
-.explosao-jogador-inimigo1 {
+.explosao-helicoptero-inimigo, .explosao-caminhao {
     background-image: url(../imagens/explosao.png);
     width           : 15px;
     height          : 87px;
     position        : absolute;
 
 }
-
 
 /* animações */
 .animacao-jogador {
@@ -114,12 +113,12 @@ h1 {
     }
 }
 
-.animacao-inimigo1 {
-    background-image: url(../imagens/inimigo1.png);
-    animation       : animacao-inimigo1 .5s steps(2) infinite;
+.animacao-helicoptero-inimigo {
+    background-image: url(../imagens/helicoptero-inimigo.png);
+    animation       : animacao-helicoptero-inimigo .5s steps(2) infinite;
 }
 
-@keyframes animacao-inimigo1 {
+@keyframes animacao-helicoptero-inimigo {
     from {
         background-position: 0px;
     }
@@ -129,12 +128,12 @@ h1 {
     }
 }
 
-.animacao-amigo {
-    background-image: url(../imagens/amigo.png);
-    animation       : animacao-amigo 1s steps(12) infinite;
+.animacao-aliado {
+    background-image: url(../imagens/aliado.png);
+    animation       : animacao-aliado 1s steps(12) infinite;
 }
 
-@keyframes animacao-amigo {
+@keyframes animacao-aliado {
     from {
         background-position: 0px;
     }
