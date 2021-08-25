@@ -1,13 +1,22 @@
-function processarJogo() {
-    //=================
-    //Criar elementos na tela
-    //=================
+//=================
+//Sons do Jogo
+//=================
+const musicaJogo = document.querySelector('.som-musica-fundo')
+const somDisparo = document.querySelector('.som-disparo')
+const somExplosao = document.querySelector('.som-explosao')
+const somGameover = document.querySelector('.som-gameover')
+const somAliadoPerdido = document.querySelector('.som-aliado-perdido')
+const somAliadoResgatado = document.querySelector('.som-aliado-resgatado')
 
-    $(".inicio").hide()
-    $(".fundo-jogo").append("<div class='jogador animacao-jogador'</div>")
-    $(".fundo-jogo").append("<div class='aliado animacao-aliado'</div>")
-    $(".fundo-jogo").append("<div class='helicoptero-inimigo animacao-helicoptero-inimigo'</div>")
-    $(".fundo-jogo").append("<div class='caminhao'</div>")
+function processarJogo() {
+    criarElementosNaTela()
+    
+    musicaJogo.addEventListener('ended', () => {
+        musicaJogo.currentTime = 0
+        musicaJogo.play()
+    }, false)
+
+    musicaJogo.play()
 
     //=================
     //Game looping
@@ -22,11 +31,13 @@ function processarJogo() {
         moverCaminhao()
         moverAliado()
         detectarColisoes()
+        mostrarPlacar()
+        atualizarEnergia()
     }
 
     function moverFundo() {
-        const esquerda = parseInt($(".fundo-jogo").css("background-position"))
-        $(".fundo-jogo").css("background-position", esquerda - 1)
+        const posicaoFundo = parseInt($(".fundo-jogo").css("background-position"))
+        $(".fundo-jogo").css("background-position", posicaoFundo - 1)
     }
 
     //=================
@@ -35,7 +46,9 @@ function processarJogo() {
     const pressionarTecla = []
     const tecla = {
         W: 87,
+        A: 65,
         S: 83,
+        D: 68,
         ESPACO: 32
     }
 
@@ -48,21 +61,39 @@ function processarJogo() {
     })
 
     function moverJogador() {
-        if (pressionarTecla[tecla.W]) {
-            let topo = parseInt($('.jogador').css("top"))
-            $(".jogador").css("top", topo - 10)
+        let topoJogador = parseInt($('.jogador').css("top"))
+        let direitaJogador = parseInt($('.jogador').css("left"))
 
-            if (topo <= 0) {
-                $(".jogador").css("top", topo + 10)
+
+        if (pressionarTecla[tecla.W]) {
+            $(".jogador").css("top", topoJogador - 10)
+
+            if (topoJogador <= 0) {
+                $(".jogador").css("top", topoJogador + 10)
+            }
+        }
+
+        if (pressionarTecla[tecla.A]) {
+            $(".jogador").css("left", direitaJogador - 10)
+
+            if (direitaJogador <= 0) {
+                $(".jogador").css("left", direitaJogador + 10)
             }
         }
 
         if (pressionarTecla[tecla.S]) {
-            let topo = parseInt($('.jogador').css("top"))
-            $(".jogador").css("top", topo + 10)
+            $(".jogador").css("top", topoJogador + 10)
 
-            if (topo >= 434) {
-                $(".jogador").css("top", topo - 10)
+            if (topoJogador >= 434) {
+                $(".jogador").css("top", topoJogador - 10)
+            }
+        }
+
+        if (pressionarTecla[tecla.D]) {
+            $(".jogador").css("left", direitaJogador + 10)
+
+            if (direitaJogador >= 680) {
+                $(".jogador").css("left", direitaJogador - 10)
             }
         }
 
@@ -72,12 +103,13 @@ function processarJogo() {
     }
 
     //=================
-    //Movimentação dos inimigos
+    //Movimentação do Helicóptero inimigo
     //=================
     let posicaoY = parseInt(Math.random() * 334)
+    let velocidadeHelicopteroInimigo = 4
     function moverHelicopteroInimigo() {
         let posicaoX = parseInt($('.helicoptero-inimigo').css('left'))
-        $(".helicoptero-inimigo").css('left', posicaoX - 7)
+        $(".helicoptero-inimigo").css('left', posicaoX - velocidadeHelicopteroInimigo)
         $(".helicoptero-inimigo").css('top', posicaoY)
 
         if (posicaoX <= 0) {
@@ -87,6 +119,9 @@ function processarJogo() {
         }
     }
 
+    //=================
+    //Movimentação do Caminhão
+    //=================
     function moverCaminhao() {
         let posicaoX = parseInt($('.caminhao').css('left'))
         $(".caminhao").css('left', posicaoX - 3)
@@ -113,16 +148,18 @@ function processarJogo() {
     //=================
     let podeAtirar = true
     function criarProjetil() {
+        somDisparo.play()
+
         if (podeAtirar === true) {
             podeAtirar = false
 
-            let topo = parseInt($('.jogador').css('top'))
-            let posicaoX = parseInt($('.jogador').css('left'))
-            let tiroX = posicaoX + 190
-            let topoTiro = topo + 43
+            let jogadorX = parseInt($('.jogador').css('left'))
+            let jogadorY = parseInt($('.jogador').css('top'))
+            let disparoX = jogadorX + 190
+            let disparoY = jogadorY + 43
             $('.fundo-jogo').append("<div class='projetil'></div>")
-            $('.projetil').css('top', topoTiro)
-            $('.projetil').css('left', tiroX)
+            $('.projetil').css('left', disparoX)
+            $('.projetil').css('top', disparoY)
 
             var moverProjetil = window.setInterval(moverProjetil, 30)
         }
@@ -150,9 +187,12 @@ function processarJogo() {
         let colisaoAliadoCaminhao = ($(".aliado").collision($(".caminhao")))
 
         if (colisaoJogadorHelicopteroInimigo.length > 0) {
+            somExplosao.play()
+            energiaAtual--
+
             let helicopteroInimigoX = parseInt($('.helicoptero-inimigo').css('left'))
             let helicopteroInimigoY = parseInt($('.helicoptero-inimigo').css('top'))
-            explosaoHelicopteroInimigo(helicopteroInimigoX, helicopteroInimigoY)
+            explodirHelicopteroInimigo(helicopteroInimigoX, helicopteroInimigoY)
 
             posicaoY = parseInt(Math.random() * 334)
             $('.helicoptero-inimigo').css('left', 694)
@@ -160,9 +200,12 @@ function processarJogo() {
         }
 
         if (colisaoJogadorCaminhao.length > 0) {
+            somExplosao.play()
+            energiaAtual--
+
             let caminhaoX = parseInt($('.caminhao').css('left'))
             let caminhaoY = parseInt($('.caminhao').css('top'))
-            explosaoCaminhao(caminhaoX, caminhaoY)
+            explodirCaminhao(caminhaoX, caminhaoY)
 
             $('.caminhao').remove()
 
@@ -170,9 +213,13 @@ function processarJogo() {
         }
 
         if (colisaoProjetilHelicopteroInimigo.length > 0) {
+            somExplosao.play()
+            velocidadeHelicopteroInimigo += 0.2
+            pontuacao += 100
+
             let helicopteroInimigoX = parseInt($('.helicoptero-inimigo').css('left'))
             let helicopteroInimigoY = parseInt($('.helicoptero-inimigo').css('top'))
-            explosaoHelicopteroInimigo(helicopteroInimigoX, helicopteroInimigoY)
+            explodirHelicopteroInimigo(helicopteroInimigoX, helicopteroInimigoY)
             $('.projetil').css('left', 950)
 
             posicaoY = parseInt(Math.random() * 334)
@@ -181,28 +228,44 @@ function processarJogo() {
         }
 
         if (colisaoProjetilCaminhao.length > 0) {
+            somExplosao.play()
+            pontuacao += 50
+
             let caminhaoX = parseInt($('.caminhao').css('left'))
             let caminhaoY = parseInt($('.caminhao').css('top'))
-            explosaoCaminhao(caminhaoX, caminhaoY)
+            explodirCaminhao(caminhaoX, caminhaoY)
             $('.projetil').css('left', 950)
-
             $('.caminhao').remove()
 
             reposicionarCaminhao()
         }
 
         if (colisaoJogadorAliado.length > 0) {
+            somAliadoResgatado.play()
+            aliadosSalvos++
+
             reposicionarAliado()
             $('.aliado').remove()
         }
+
+        if (colisaoAliadoCaminhao.length > 0) {
+            somAliadoPerdido.play()
+            aliadosPerdidos++
+
+            let aliadoX = parseInt($('.aliado').css('left'))
+            let aliadoY = parseInt($('.aliado').css('top'))
+            explodirAliado(aliadoX, aliadoY)
+            $('.aliado').remove()
+
+            reposicionarAliado()
+        }
     }
 
-    function explosaoHelicopteroInimigo(helicopteroInimigoX, helicopteroInimigoY) {
+    function explodirHelicopteroInimigo(helicopteroInimigoX, helicopteroInimigoY) {
         $('.fundo-jogo').append("<div class='explosao-helicoptero-inimigo'></div>")
-
         $('.explosao-helicoptero-inimigo').css('top', helicopteroInimigoY)
         $('.explosao-helicoptero-inimigo').css('left', helicopteroInimigoX)
-        $('.explosao-helicoptero-inimigo').animate({ width: 200, opacity: 0 }, "slow")
+        $('.explosao-helicoptero-inimigo').animate({ width: 250, opacity: 0 }, "slow")
 
         let tempoExplosao = window.setInterval(removerExplosao, 1000)
 
@@ -212,12 +275,11 @@ function processarJogo() {
         }
     }
 
-    function explosaoCaminhao(caminhaoX, caminhaoY) {
+    function explodirCaminhao(caminhaoX, caminhaoY) {
         $('.fundo-jogo').append("<div class='explosao-caminhao'></div>")
-
         $('.explosao-caminhao').css('top', caminhaoY)
         $('.explosao-caminhao').css('left', caminhaoX)
-        $('.explosao-caminhao').animate({ width: 200, opacity: 0 }, "slow")
+        $('.explosao-caminhao').animate({ width: 250, opacity: 0 }, "slow")
 
         let tempoExplosao = window.setInterval(removerExplosao, 1000)
 
@@ -239,6 +301,20 @@ function processarJogo() {
         }
     }
 
+    function explodirAliado(aliadoX, aliadoY) {
+        $('.fundo-jogo').append("<div class='explosao-aliado'</div>")
+        $('.explosao-aliado').css('left', aliadoX)
+        $('.explosao-aliado').css('top', aliadoY)
+
+        let tempoExplosao = window.setInterval(removerExplosao, 1000)
+
+        function removerExplosao() {
+            $('.explosao-aliado').remove()
+            window.clearInterval(tempoExplosao)
+        }
+
+    }
+
     function reposicionarAliado() {
         let tempoColisaoAliado = window.setInterval(aparecerAliado, 6000)
 
@@ -251,9 +327,89 @@ function processarJogo() {
         }
     }
 
+    //=================
+    //Placar do jogo
+    //=================
+    let pontuacao = 0
+    let aliadosSalvos = 0
+    let aliadosPerdidos = 0
+
+    function mostrarPlacar() {
+        $('.placar').html(`<h2>Pontuação: ${pontuacao} / Aliados Salvos: ${aliadosSalvos} / Aliados Perdidos: ${aliadosPerdidos}</h2>`)
+    }
+
+    //=================
+    //Energia do jogador
+    //=================
+
+    let energiaAtual = 3
+
+    function atualizarEnergia() {
+        if (energiaAtual === 3) {
+            $('.energia').css('background-image', 'url(../imagens/energia3.png)')
+        } else if (energiaAtual === 2) {
+            $('.energia').css('background-image', 'url(../imagens/energia2.png)')
+        } else if (energiaAtual === 1) {
+            $('.energia').css('background-image', 'url(../imagens/energia1.png)')
+        } else if (energiaAtual === 0) {
+            $('.energia').css('background-image', 'url(../imagens/energia0.png)')
+            exibirFimDeJogo()
+        }
+    }
+
+
 
     //=================
     //Fim de jogo
     //=================
     let fimDeJogo = false
+
+    function exibirFimDeJogo() {
+        fimDeJogo = true
+        musicaJogo.pause()
+        somGameover.play()
+
+        window.clearInterval(jogo.temporizador)
+
+        $('.jogador').remove()
+        $('.helicoptero-inimigo').remove()
+        $('.caminhao').remove()
+        $('.aliado').remove()
+        $('.placar').remove()
+        $('.energia').remove()
+
+
+        $('.fundo-jogo').append("<div class='fim'></div>")
+
+        $('.fim').html(`
+        <h1>Game Over</h1>
+        <p>Sua pontuação foi: ${pontuacao}</p>
+        <p>Aliados salvos: ${aliadosSalvos}</p>
+        <p>Aliados perdidos: ${aliadosPerdidos}</p>
+        <button onclick='reiniciarJogo()'>Jogar Novamente</button>
+        `)
+    }
+}
+
+//=================
+//Criar elementos na tela
+//=================
+function criarElementosNaTela() {
+    $(".inicio").hide()
+    $(".fundo-jogo").append("<div class='jogador animacao-jogador'</div>")
+    $(".fundo-jogo").append("<div class='aliado animacao-aliado'</div>")
+    $(".fundo-jogo").append("<div class='helicoptero-inimigo animacao-helicoptero-inimigo'</div>")
+    $(".fundo-jogo").append("<div class='caminhao'</div>")
+    $(".fundo-jogo").append("<div class='placar'</div>")
+    $(".fundo-jogo").append("<div class='energia'</div>")
+}
+
+
+//=================
+//Reiniciar Jogo
+//=================
+function reiniciarJogo() {
+    somGameover.pause()
+    $('.fim').remove()
+    processarJogo()
 }

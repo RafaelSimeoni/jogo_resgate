@@ -9,6 +9,7 @@ html {
 }
 
 body {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     overflow-y      : hidden;
     background-image: url(../imagens/fundo.jpg);
     display         : flex;
@@ -20,6 +21,12 @@ h1 {
     font-family: anodetonoone;
     font-size  : 40px;
     color      : #603a03
+}
+
+h2 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size  : 20px; 
+    color      : #fff;
 }
 
 .container {
@@ -37,13 +44,27 @@ h1 {
     align-items     : center;
 }
 
-.inicio {
+.inicio, .fim {
     width     : 350px;
-    height    : 245px;
     background: #fff;
     text-align: center;
-    padding   : 10px;
+    padding   : 10px 10px 25px 10px;
+}
 
+.placar {
+    width   : 700px;
+    height  : 50px;
+    position: absolute;
+    left    : 5px;
+    top     : 590px;
+}
+
+.energia {
+    width: 140px;
+    height: 38px;
+    position: absolute;
+    left: 750px;
+    top: 7px;
 }
 
 .jogador {
@@ -83,15 +104,16 @@ h1 {
 }
 
 .projetil {
-    width           : 50px;
-    height          : 8px;
+    width           : 40px;
+    height          : 20px;
     position        : absolute;
     background-image: url(../imagens/projetil.png);
 }
 
-.explosao-helicoptero-inimigo, .explosao-caminhao {
+.explosao-helicoptero-inimigo,
+.explosao-caminhao {
     background-image: url(../imagens/explosao.png);
-    width           : 15px;
+    width           : 100px;
     height          : 87px;
     position        : absolute;
 
@@ -140,5 +162,23 @@ h1 {
 
     to {
         background-position: -528px;
+    }
+}
+
+.explosao-aliado {
+    background-image: url(../imagens/aliado_explosao.png);
+    width           : 44px;
+    height          : 51px;
+    position        : absolute;
+    animation       : explosao-aliado .5s steps(7) infinite;
+}
+
+@keyframes explosao-aliado {
+    from {
+        background-position: 0px;
+    }
+
+    to {
+        background-position: -308px;
     }
 }

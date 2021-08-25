@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS -->
     <link rel="stylesheet" href="estilos/estilo.css">
+
     <!-- JS -->
     <script defer src="js/jquery-1.11.1.min.js"></script>
     <script defer src="js/jquery-collision.min.js"></script>
@@ -19,13 +20,21 @@
         <div class="fundo-jogo">
             <div class="inicio">
                 <h1>Resgate</h1>
-                <p>W &#9992; Movimentar para cima</p>
-                <p>S &#9992; Movimentar para baixo</p>
-                <p>ESPAÇO &#9992; Atirar</p>
+                <p>W, A, S, D &rarr; Movimentar helicóptero</p>
+                <p>ESPAÇO &rarr; Atirar</p>
                 <button onclick="processarJogo()">Iniciar Jogo</button>
             </div>
         </div>
     </div>
+
+    <!-- Sons do jogo -->
+    <audio src="sons/explosao.mp3" preload="auto" class="som-explosao"></audio>
+    <audio src="sons/gameover.mp3" preload="auto" class="som-gameover"></audio>
+    <audio src="sons/musica_fundo.mp3" preload="auto" class="som-musica-fundo"></audio>
+    <audio src="sons/perdido.mp3" preload="auto" class="som-aliado-perdido"></audio>
+    <audio src="sons/resgate.mp3" preload="auto" class="som-aliado-resgatado"></audio>
+    <audio src="sons/disparo.mp3" preload="auto" class="som-disparo"></audio>
+
 </body>
 
 </html>
