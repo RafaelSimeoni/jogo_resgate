@@ -359,7 +359,7 @@ function mostrarPlacar() {
 //=================
 //Energia do jogador
 //=================
-energiaAtual = 3
+let energiaAtual = 3
 function atualizarEnergia() {
     if (energiaAtual === 3) {
         $('.energia').css('background-image', 'url(../imagens/energia3.png)')
