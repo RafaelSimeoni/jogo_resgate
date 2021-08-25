@@ -42,9 +42,9 @@ function tocarMusica() {
 //=================
 function executarLooping() {
     moverFundo()
-    moverJogador()
     moverHelicopteroInimigo()
     moverCaminhao()
+    moverJogador()
     moverAliado()
     detectarColisoes()
     mostrarPlacar()
@@ -54,13 +54,12 @@ function executarLooping() {
 //=================
 //Movimentações:
 //=================
-
 function moverFundo() {
     const posicaoFundo = parseInt($(".fundo-jogo").css("background-position"))
     $(".fundo-jogo").css("background-position", posicaoFundo - 1)
 }
 
-//MUDAR AQUI
+
 const pressionarTecla = []
 const tecla = {
     W: 87,
@@ -119,7 +118,6 @@ function moverJogador() {
     }
 }
 
-
 let posicaoY = parseInt(Math.random() * 334)
 let velocidadeHelicopteroInimigo = 5
 function moverHelicopteroInimigo() {
@@ -134,9 +132,10 @@ function moverHelicopteroInimigo() {
     }
 }
 
+let velocidadeCaminhao = 3
 function moverCaminhao() {
     let posicaoX = parseInt($('.caminhao').css('left'))
-    $(".caminhao").css('left', posicaoX - 3)
+    $(".caminhao").css('left', posicaoX - velocidadeCaminhao)
 
     if (posicaoX <= 0) {
         $(".caminhao").css('left', 775)
@@ -157,9 +156,9 @@ function moverAliado() {
 //=================
 let podeAtirar = true
 function criarProjetil() {
-    somDisparo.play()
 
     if (podeAtirar === true) {
+        somDisparo.play()
         podeAtirar = false
 
         let jogadorX = parseInt($('.jogador').css('left'))
@@ -225,6 +224,7 @@ function detectarColisoes() {
     if (colisaoProjetilHelicopteroInimigo.length > 0) {
         somExplosao.play()
         velocidadeHelicopteroInimigo += 0.3
+        velocidadeCaminhao += 0.1
         pontuacao += 100
 
         let helicopteroInimigoX = parseInt($('.helicoptero-inimigo').css('left'))
@@ -239,6 +239,8 @@ function detectarColisoes() {
 
     if (colisaoProjetilCaminhao.length > 0) {
         somExplosao.play()
+        velocidadeHelicopteroInimigo += 0.1
+        velocidadeCaminhao += 0.5
         pontuacao += 50
 
         let caminhaoX = parseInt($('.caminhao').css('left'))
@@ -411,6 +413,7 @@ function reiniciarJogo() {
 
     energiaAtual = 3
     velocidadeHelicopteroInimigo = 4
+    velocidadeCaminhao = 3
     pontuacao = 0
     aliadosSalvos = 0
     aliadosPerdidos = 0
