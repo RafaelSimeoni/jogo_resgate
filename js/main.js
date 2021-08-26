@@ -361,15 +361,24 @@ function mostrarPlacar() {
 //=================
 let energiaAtual = 3
 function atualizarEnergia() {
-    if (energiaAtual === 3) {
-        $('.energia').css('background-image', 'url(../imagens/energia3.png)')
-    } else if (energiaAtual === 2) {
-        $('.energia').css('background-image', 'url(../imagens/energia2.png)')
-    } else if (energiaAtual === 1) {
-        $('.energia').css('background-image', 'url(../imagens/energia1.png)')
-    } else if (energiaAtual === 0) {
-        $('.energia').css('background-image', 'url(../imagens/energia0.png)')
-        exibirFimDeJogo()
+    switch(energiaAtual) {
+        case 3:
+            document.querySelector('.energia').innerHTML = "<img src='imagens/energia3.png' alt='energia 3'>"
+        break
+
+        case 2:
+            document.querySelector('.energia').innerHTML = "<img src='imagens/energia2.png' alt='energia 2'>"
+        break
+
+        case 1:
+            document.querySelector('.energia').innerHTML = "<img src='imagens/energia1.png' alt='energia 1'>"
+        break
+
+        case 0:
+            document.querySelector('.energia').innerHTML = "<img src='imagens/energia0.png' alt='energia 0'>"
+            exibirFimDeJogo()
+        break
+
     }
 }
 
